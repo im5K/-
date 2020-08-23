@@ -90,6 +90,7 @@ rules: [
 getFieldDecorator('password', {
 rules: [{validator: this.validator}
 ]
+
 })(
 <Input prefix={<Icon type="lock" style={{color:
 'rgba(0,0,0,.25)'}}/>} type="password"
