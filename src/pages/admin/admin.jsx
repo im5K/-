@@ -3,7 +3,10 @@ import { Redirect } from "react-router-dom"
 import {Layout} from 'antd'
 
 import memoryUtils from "../../utils/memoryUtils"
-const{Header,Footer,Sider,Content}=Layout
+import LeftNav from "../../components/left-nav"
+ import Header from "../../components/header"
+
+const{Footer,Sider,Content}=Layout
 
 export default class Admin extends React.Component{
 
@@ -16,11 +19,13 @@ export default class Admin extends React.Component{
         }
         return(
             <Layout style={{height:'100%'}}>
-            <Sider>Sider</Sider>
+            <Sider>
+                <LeftNav/>
+            </Sider>
             <Layout>
             <Header>Header</Header>
-            <Content >Content</Content>
-            <Footer >推荐使用谷歌浏览器，可以获得更佳页面操作体验</Footer>
+            <Content style={{backgroundColor: "white"}}>Content</Content>
+            <Footer style={{textAlign: "center",color: "#cccccc"}} >推荐使用谷歌浏览器，可以获得更佳页面操作体验</Footer>
             </Layout>
             </Layout>
         )
