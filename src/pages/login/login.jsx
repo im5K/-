@@ -12,9 +12,10 @@ import {
 import './login.less'
 import logo from "../../assets/images/logo.png"
 import {reqLogin} from '../../api'
+import { Redirect } from "react-router-dom"
+
 import memoryUtils from "../../utils/memoryUtils"
 import storageUtils from "../../utils/storageUtils"
-import { Redirect } from "react-router-dom"
 //不能写在import之前
 const Item = Form.Item
 class Login extends React.Component {
@@ -75,7 +76,7 @@ class Login extends React.Component {
     render() {
         //判断用户是否登录
         const user  = memoryUtils.user
-        console.log(user)
+  
 
         if(user&&user._id){
             return <Redirect to="/"/>

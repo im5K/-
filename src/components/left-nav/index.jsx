@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {Link} from "react-router-dom"
+import {Link, withRouter} from "react-router-dom"
 import {Menu,Icon} from "antd"
 
 import './index.less'
@@ -7,7 +7,7 @@ import logo from '../../assets/images/logo.png'
 import menuList from '../../config/menuconfig.js'
 
 const SubMenu = Menu.SubMenu
-export default class LeftNav extends Component{
+ class LeftNav extends Component{
      //根据menu的数据数组生成标签数组
      //使用map+递归调用
      /*
@@ -41,6 +41,8 @@ export default class LeftNav extends Component{
     }
     */
     getMenuNodes = (menuList)=>{
+        const path = this.props.location.pathname
+        
         return menuList.reduce((pre,item)=>{
             if(!item.children){
                 pre.push((
@@ -54,6 +56,13 @@ export default class LeftNav extends Component{
                   
                     ))
             }else{
+                //更新时需要查找与路径对应
+                const CItem = item.children.find(citem=>citem.key===path)
+                //如果存在则需要展开
+                if(CItem){
+                    this.openKey = item.key
+                }
+                
                 pre.push((
                     <SubMenu
                     key={item.key}
@@ -73,8 +82,17 @@ export default class LeftNav extends Component{
          return pre
         },[])
     }
-   
+    //第一次render之前，为第一次render做准备
+   componentWillMount(){
+       this.menuNodes = this.getMenuNodes(menuList)
+   }
     render(){
+        //非路由组件不能读取pathname 
+        
+        const path = this.props.location.pathname
+        const openKey = this.openKey
+        //会报错
+        this.openKey = path
         return (
             <div className="left-nav">
                 <Link to="/" className="left-nav-header">
@@ -84,9 +102,11 @@ export default class LeftNav extends Component{
             <Menu      
             mode = 'inline'
             theme='dark'
+            selectedKeys={[path]}
+            defaultOpenKeys={[openKey]}
             >
                
-               {this.getMenuNodes(menuList)}
+               {this.menuNodes}
             </Menu>
            
                 
@@ -95,3 +115,7 @@ export default class LeftNav extends Component{
         
     }
 }
+//withrouter 是高阶组件
+//向包装非路由组件，返回一个组件给与三个新的属性
+//变成路由组件
+export default withRouter(LeftNav)

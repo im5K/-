@@ -9,5 +9,4 @@ import memoryUtils from "../src/utils/memoryUtils"
 //读取local的user
 const user = storageUtils.getUser()
 memoryUtils.user = user
-console.log(user,"aaaaaa")
 ReactDOM.render(<App />, document.getElementById('root'))
