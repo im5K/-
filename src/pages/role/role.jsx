@@ -4,7 +4,7 @@ export default class Role extends Component{
     render(){
         return(
             <div>
-                Home
+                Role
             </div>
         )
     }
