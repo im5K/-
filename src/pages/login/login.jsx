@@ -34,7 +34,7 @@ class Login extends React.Component {
                 //console.log('请求成功', username, password,response)
                 
                 console.log(result)
-                if(result.status==0){//登陆成功
+                if(result.status===0){//登陆成功
                     message.success("登陆成功")
                     const user = result.data//需要保存user
 

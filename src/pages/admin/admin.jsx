@@ -1,4 +1,4 @@
-import React ,{Component} from "react"
+import React  from "react"
 import { Redirect,Route,Switch} from "react-router-dom"
 import {Layout} from 'antd'
 
@@ -14,10 +14,6 @@ import User from '../user/user'
 import Pie from '../chart/pie'
 import Bar from '../chart/bar'
 import Line from '../chart/line'
-
-
-
-
 
 
 
@@ -40,7 +36,7 @@ export default class Admin extends React.Component{
             </Sider>
             <Layout>
             <Header>Header</Header>
-            <Content style={{margin:20,backgroundColor:'#fff'}}>
+            <Content style={{backgroundColor: 'white', margin: '20px 20px 0',height:"100%"}}>
                 <Switch>
                     <Route path='/home' component={Home}/>
                     <Route path='/category' component={Category}/>
