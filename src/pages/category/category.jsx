@@ -3,6 +3,7 @@ import { Card, Icon, Button, Table, message, Modal } from 'antd'
 
 import LinkButton from '../../components/link-button'
 import { reqCategorys } from "../../api"
+import {reqUpdateCategory} from '../../api/index'
 
 import AddForm from "./add-form"
 import UpdateForm from "./update-form"
@@ -98,11 +99,14 @@ export default class Category extends Component {
 
     // 响应点击取消：隐藏确认框
     handleCancel = () => {
+        //清除输入数据
+        this.form.resetFields()
+        //隐藏输入框
         this.setState({
             showStatus:0
         })
     }
-    //显示添加
+    //显示添加s
     showAdd = () => {
         this.setState({
             showStatus:1
@@ -123,8 +127,24 @@ export default class Category extends Component {
         })
     }
     //更新分类
-    updateCategory = () => {
+    updateCategory = async () => {
         console.log("updateCategory")
+        //隐藏确认框
+        this.setState({
+            showStatus:0
+        })
+        const categoryId = this.category._id
+        const categoryName = this.form.getFieldValue('categoryName')
+        //清除输入数据
+        this.form.resetFields()
+        //2 .发请求更新分类
+       const result = await reqUpdateCategory({categoryId,categoryName})
+        //3.更新页面
+       if(result.status===0){
+        this.getCategorys();
+       }
+       
+        
     }
 
     //为第一次render准备数据
@@ -188,7 +208,10 @@ export default class Category extends Component {
                     onOk={this.updateCategory}
                     onCancel={this.handleCancel}
                 >
-                   <UpdateForm categoryName={category.name}></UpdateForm>
+                   <UpdateForm categoryName={category.name} 
+                   setForm={(form)=>{this.form=form}}>
+
+                   </UpdateForm>
                 </Modal>
 
             </Card>
