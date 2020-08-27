@@ -1,8 +1,10 @@
 import React,{Component} from 'react'
 import {withRouter} from 'react-router-dom'
+import  {Modal} from 'antd'
 
 import {formateDate} from "../../utils/dateUtils"
 import memoryUtils from "../../utils/memoryUtils.js"
+import storageUtils from "../../utils/storageUtils.js"
 import{reqWeather} from "../../api/index.js" 
 import menuList from '../../config/menuconfig'
 import "./index.less"
@@ -12,7 +14,7 @@ class Header extends Component{
         weather: "",
     }
     getTime=()=>{
-        setInterval(()=>{
+      this.IntervalId = setInterval(()=>{
             const currentTime = formateDate(Date.now())
             this.setState({currentTime})
         },1000)
@@ -38,6 +40,20 @@ class Header extends Component{
         })
         return title
     }
+    logout = () => {
+        Modal.confirm({
+        content: '确定退出吗?',
+        onOk: () => {
+        console.log('OK')
+        // 移除保存的user
+        storageUtils.removeUser()
+        memoryUtils.user = {}
+        // 跳转到login
+        this.props.history.replace('/login')
+        }
+        })
+    }
+
     /*
     第一次执行render之后
     一般在此执行异步操作：发ajax请求定时器
@@ -45,6 +61,13 @@ class Header extends Component{
     componentDidMount(){
         this.getTime()
         this.getWeather()
+    }
+    /*
+    当前组件卸载之前调用
+    */
+    componentWillUnmount(){
+    //清楚定时器
+    clearInterval(this.IntervalId)
     }
     render(){
         const {currentTime,weather}=this.state
@@ -55,7 +78,7 @@ class Header extends Component{
             <div className="header">
               <div className='header-top'>
                   <span>欢迎，{username}</span>
-                  <a href="javascript:">退出</a>
+                  <a href="javascript:" onClick={this.logout}>退出</a>
               </div>
               <div className="header-bottom">
                   <div className="header-bottom-left">{title}</div>
