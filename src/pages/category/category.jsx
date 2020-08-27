@@ -3,6 +3,9 @@ import { Card, Icon, Button, Table, message, Modal } from 'antd'
 
 import LinkButton from '../../components/link-button'
 import { reqCategorys } from "../../api"
+
+import AddForm from "./add-form"
+import UpdateForm from "./update-form"
 export default class Category extends Component {
     state = {
         loading: false,
@@ -26,7 +29,7 @@ export default class Category extends Component {
                 width: 300,
                 render: (category) => (
                     <span>
-                        <LinkButton onClick={this.showUpdate}>修改分类</LinkButton>
+                        <LinkButton onClick={()=>{this.showUpdate(category)}}>修改分类</LinkButton>
                         {/* 不能直接调用this.subcategory(para)，因为在渲染时就会调用
                         我们希望在点击的时候才使用相应的值 */}
                         {/* 如何向事件回调函数传递参数 ，先定义匿名函数，再再函数调用处理的函数中传递参数*/}
@@ -111,7 +114,10 @@ export default class Category extends Component {
         console.log("addCategory")
     }
     //显示更新确认框
-    showUpdate= () => {
+    showUpdate= (category) => {
+        //保存分类对象
+        this.category = category
+        //更新状态
         this.setState({
             showStatus:2
         })
@@ -135,6 +141,8 @@ export default class Category extends Component {
     render() {
         //card 左侧
         const { categorys, loading, parentId, subCategorys, parentName, showStatus } = this.state
+       //读取指定分类
+       const category = this.category||{}
         const title = parentId === '0' ? "一级分类列表" : (
             <span>
                 <LinkButton onClick={this.showCategorys}>一级分类列表</LinkButton>
@@ -171,9 +179,7 @@ export default class Category extends Component {
                     onOk={this.addCategory}
                     onCancel={this.handleCancel}
                 >
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
+                    <AddForm></AddForm>
                 </Modal>
 
                 <Modal
@@ -182,9 +188,7 @@ export default class Category extends Component {
                     onOk={this.updateCategory}
                     onCancel={this.handleCancel}
                 >
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
+                   <UpdateForm categoryName={category.name}></UpdateForm>
                 </Modal>
 
             </Card>
