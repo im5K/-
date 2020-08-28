@@ -104,7 +104,7 @@ class Login extends React.Component {
                                         { max: 12, message: '用户名必须小于12 位' },
                                         {
                                             pattern: /^[a-zA-Z0-9_]+$/,
-                                            message: '用户名必须是英文、数组或下划线组成'
+                                            message: '用户名必须是英文、数组或下划线组成',
                                         }
                                     ],
                                     
