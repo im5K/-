@@ -14,8 +14,18 @@ ajax('/manage/user/add',user,'POST')
 export const reqCategorys=(parentId)=> ajax(BASE+'manage/category/list',{parentId:parentId})
 //添加分类
 export const reqaddCategory=(categoryName,parentId)=> ajax(BASE+'manage/category/add',{categoryName,parentId},'POST')
-//添加分类
+//更新分类
 export const reqUpdateCategory=({categoryId,categoryName})=> ajax(BASE+'manage/category/update',{categoryId,categoryName},'POST')
+
+//获取商品分页列表
+export const reqProducts = (pageNum,pageSize) => ajax(BASE+'/manage/product/list',{pageNum,pageSize})
+//搜索商品分页列表
+export const reqSearchProducts = ({pageNum,pageSize, searchName,searchType}) => ajax(BASE+'/manage/product/search',{
+    pageNum,
+    pageSize,
+    //变量名当属性需要加括号
+    [searchType]:searchName,
+})
 
 /*
 json请求接口请求函数

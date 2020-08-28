@@ -148,16 +148,18 @@ export default class Category extends Component {
             showStatus:2
         })
     }
-    //更新分类
+    更新分类
     updateCategory =  () => {
         console.log("updateCategory")
-        this.form.validateFields(async(err,values)=>{
+        
+        this.form.validateFields(async(err,values)=>{ 
           if(!err){
             this.setState({
                 showStatus:0
             })
             const categoryId = this.category._id
-            const categoryName =values
+            console.log(values)
+            const {categoryName} = values
             //清除输入数据
             this.form.resetFields()
             //2 .发请求更新分类
@@ -166,14 +168,12 @@ export default class Category extends Component {
            if(result.status===0){
             this.getCategorys();
            }
-          }  
+          }    this.form.resetFields()
         })
         //隐藏确认框
-     
        
-        
-    }
-
+     }
+    
     //为第一次render准备数据
     componentWillMount() {
         this.initColumns();
