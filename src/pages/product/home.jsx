@@ -6,13 +6,15 @@ import {
     Input,
     Button,
     Icon,
-    Table
+    Table,
+    message
 } from "antd"
 
 import LinkButton from '../../components/link-button'
 import {reqProducts} from '../../api/index.js'
 import {PAGE_SIZE} from "../../utils/constants.js"
 import {reqSearchProducts} from '../../api/index.js'
+import {reqUpadateStatus} from '../../api/index.js'
 
 const Option = Select.Option
 /*
@@ -26,6 +28,15 @@ export default class ProductHome extends Component{
         searchName:'',
         searchType: 'productName'
 
+    }
+    //更新状态
+    UpadateStatus= async (productId,status) => {
+        const result = await reqUpadateStatus(productId,status)
+        if(result.status===0){
+            message.success("更新商品成功")
+            this.getProducts(this.pageNum)
+        }
+        
     }
     //初始化表格列的数组
     initColums=() => {
@@ -48,12 +59,18 @@ export default class ProductHome extends Component{
             {
                 title: '状态',
                 width: 100,
-                dataIndex: 'status',
-                render: (status) => {
+                //dataIndex: 'status',
+                render: (product) => {
+                    const {status,_id} = product
+                    console.log(status,_id)
                     return(
                         <span>
-                            <Button type='primary'>下架</Button>
-                            <span>在售</span>
+                            <Button type='primary'
+                            onClick={()=>{this.UpadateStatus(_id,status===1?2:1)}}
+                            > 
+                            {status===1?'下架':'上架'}
+                            </Button>
+                    <span style={{color:status===1?'green':'red'}}>{status===1?'在售':'已下架'}</span>
                         </span>
                     )
                 }
@@ -79,6 +96,8 @@ export default class ProductHome extends Component{
     }
     //获取指定页码的列表数据显示
     getProducts = async (pageNum) => {
+        //让其他方法看得见，保存pageNum
+        this.pageNum = pageNum
         this.setState({loading: true})
         const {searchName, searchType} = this.state
         let result

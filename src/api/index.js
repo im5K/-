@@ -21,7 +21,11 @@ export const reqCategory=(categoryId) => ajax(BASE+'/manage/category/info',{cate
 
 //获取商品分页列表
 export const reqProducts = (pageNum,pageSize) => ajax(BASE+'/manage/product/list',{pageNum,pageSize})
+
+// 更新商品状态
+export const reqUpadateStatus= (productId,status) => ajax(BASE+"/manage/product/updateStatus",{productId,status},'POST')
 //搜索商品分页列表
+
 export const reqSearchProducts = ({pageNum,pageSize, searchName,searchType}) => ajax(BASE+'/manage/product/search',{
     pageNum,
     pageSize,
