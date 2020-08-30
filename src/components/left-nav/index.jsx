@@ -42,6 +42,7 @@ const SubMenu = Menu.SubMenu
     */
     getMenuNodes = (menuList)=>{
         const path = this.props.location.pathname
+      
         
         return menuList.reduce((pre,item)=>{
             if(!item.children){
@@ -57,7 +58,7 @@ const SubMenu = Menu.SubMenu
                     ))
             }else{
                 //更新时需要查找与路径对应
-                const CItem = item.children.find(citem=>citem.key===path)
+                const CItem = item.children.find(citem=>path.indexOf(citem.key)===0)
                 //如果存在则需要展开
                 if(CItem){
                     this.openKey = item.key
@@ -88,9 +89,10 @@ const SubMenu = Menu.SubMenu
    }
     render(){
         //非路由组件不能读取pathname 
-        
-        const path = this.props.location.pathname
+        let path = this.props.location.pathname
         const openKey = this.openKey
+        if(path.indexOf('/product')===0)path='/product';
+
         //会报错
         this.openKey = path
         return (
