@@ -87,6 +87,7 @@ export default class PicturesWall extends React.Component {
         return (
             <div>
                 <Upload
+                // 代替你上传数据，没有自己实现
                     action="/manage/img/upload"
                     accept="image/*"
                     name={UPLOAD_IMG_NAME}

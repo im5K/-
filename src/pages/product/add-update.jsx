@@ -5,6 +5,7 @@ import { Card, Form, Input, Cascader, Upload, Button, Icon } from 'antd'
 import LinkButton from '../../components/link-button'
 import {reqCategorys} from '../../api'
 import PicturesWall from  './pictures-wall'
+import RichTextEditor from './rich-text-editor'
 const { TextArea } = Input
 
 
@@ -15,6 +16,16 @@ class ProductAddUpdate extends Component {
     state = {
         options:[],
     };
+
+    constructor (props) {
+        super(props)
+        this.pw = React.createRef();
+        this.editor = React.createRef();
+        //创建用来保存ref的容器
+    }
+
+
+
     /*
     获取一级/二级分类列表
     async 函数的值是新的promise对象，promise由async的结果来定
@@ -102,6 +113,10 @@ class ProductAddUpdate extends Component {
             if (!error) {
                 
                 alert("发送ajax请求")
+                const imgs = this.pw.current.getImgs()
+                const detail = this.editor.current.getDetail()
+                console.log('imgs',imgs)
+                console.log('detail',detail)
                 
             }
         })
@@ -128,10 +143,11 @@ class ProductAddUpdate extends Component {
     }
     render() {
         const {isUpdate,product} = this
+        const {pCategoryId, categoryId,imgs,detail} = product
         
         const categoryIds = [];
         if(isUpdate){
-            const {pCategoryId, categoryId} = product
+          
         //获取级联分类id
             
             //商品是一级分类的商品
@@ -143,7 +159,7 @@ class ProductAddUpdate extends Component {
                 categoryIds.push(categoryId);
             }
                
-            console.log(categoryIds)
+            
         }
         
       
@@ -244,13 +260,15 @@ class ProductAddUpdate extends Component {
                     {...formItemLyout}
                     label="商品图片"
                 >
-                    <PicturesWall/>
+                    <PicturesWall ref={this.pw} imgs={imgs}/>
                 </Form.Item>
                 <Form.Item
-                    {...formItemLyout}
-                    label="商品详情"
+                     
+                    label="商品详情" 
+                    labelCol={{ span: 3 }}
+                     wrapperCol={{ span: 20 }} 
                 >
-                    <Input />
+                    <RichTextEditor ref={this.editor} detail={product.detail}></RichTextEditor>
                 </Form.Item>
                 <Button type='primary' onClick={this.submit}>提交</Button>
             </Card>
@@ -259,3 +277,8 @@ class ProductAddUpdate extends Component {
 }
 
 export default Form.create()(ProductAddUpdate)
+
+/*
+1.子组件调用父组件的方法,使用函数的方式传递给子组件，子组件可以调用
+2.父组件调用子组件的方法在父组件通过ref得到子组件标签对象，调用其方法
+*/
