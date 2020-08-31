@@ -158,7 +158,7 @@ export default class Category extends Component {
                 showStatus:0
             })
             const categoryId = this.category._id
-            console.log(values)
+            
             const {categoryName} = values
             //清除输入数据
             this.form.resetFields()

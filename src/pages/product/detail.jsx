@@ -18,7 +18,7 @@ export default class ProductDetail extends Component{
         if(pCategoryId==='0'||null){//一级分类下商品
             console.log(pCategoryId,categoryId)
             const result = await reqCategory(categoryId)
-            console.log(result.data)
+           
             const cName1 = result.data.name
             this.setState({cName1})
         } else {//二级分类下商品
