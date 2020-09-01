@@ -58,7 +58,7 @@ const SubMenu = Menu.SubMenu
                     ))
             }else{
                 //更新时需要查找与路径对应
-                const CItem = item.children.find(citem=>path.indexOf(citem.key===path))
+                const CItem = item.children.find(citem=>path.indexOf(citem.key)===0)
                 //如果存在则需要展开
                 if(CItem){
                     this.openKey = item.key

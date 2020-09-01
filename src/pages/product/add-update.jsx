@@ -1,11 +1,14 @@
 
 import React, { Component } from 'react'
-import { Card, Form, Input, Cascader, Upload, Button, Icon } from 'antd'
+import { Card, Form, Input, Cascader, Upload, Button, Icon, message } from 'antd'
 
 import LinkButton from '../../components/link-button'
 import {reqCategorys} from '../../api'
+import {reqAddOrUpdateProduct} from '../../api'
+
 import PicturesWall from  './pictures-wall'
 import RichTextEditor from './rich-text-editor'
+import Category from '../category/category'
 const { TextArea } = Input
 
 
@@ -109,14 +112,43 @@ class ProductAddUpdate extends Component {
 
     submit = () => {
         //如果通过了发送请求
-        this.props.form.validateFields((error, values) => {
+        this.props.form.validateFields( async (error, values) => {
             if (!error) {
+                //1.收集数据
+                const {name,desc,price,categoryIds}=values
                 
-                alert("发送ajax请求")
+                let pCategoryId,categoryId
+                if(categoryIds.length===1){
+                    pCategoryId='0'
+                    categoryId = categoryIds[0]
+
+                }else {
+                    pCategoryId = categoryIds[0]
+                    categoryId = categoryIds[1]
+                }
                 const imgs = this.pw.current.getImgs()
                 const detail = this.editor.current.getDetail()
-                console.log('imgs',imgs)
-                console.log('detail',detail)
+                console.log(detail)
+                const product = {name,desc,price,imgs,detail,pCategoryId,categoryId}
+                console.log(product)
+                if(this.isUpdate){
+                    product._id = this.product._id
+                }
+                const result =await reqAddOrUpdateProduct(product)
+                if(result.status==0){
+                    message.success(`${this.isUpdate?'更新':'添加'}商品成功！`)
+                   
+                }else{
+                    message.error(`${this.isUpdate?'更新':'添加'}商品失败！`)
+                }
+                //如果是更新需要添加_id
+
+                //2.调用接口请求增加和更新
+                //3.根据结果提示
+                
+               
+
+               
                 
             }
         })
@@ -189,7 +221,7 @@ class ProductAddUpdate extends Component {
                 >
                     {
 
-                        getFieldDecorator('productName', {
+                        getFieldDecorator('name', {
                             initialValue: product.name,
                             rules: [
                                 { required: true, message: '必须输入' }

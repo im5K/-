@@ -24,8 +24,12 @@ export const reqProducts = (pageNum,pageSize) => ajax(BASE+'/manage/product/list
 
 // 更新商品状态
 export const reqUpadateStatus= (productId,status) => ajax(BASE+"/manage/product/updateStatus",{productId,status},'POST')
-
+//删除图片
 export const reqDeleteImg = (name) => ajax('/manage/img/delete', {name}, 'post')
+//添加商品
+export const reqAddOrUpdateProduct  = (product) => ajax(BASE+'/manage/product/'+(product._id?'update':'add'),product,'POST')
+//修改商品
+
 //搜索商品分页列表
 
 export const reqSearchProducts = ({pageNum,pageSize, searchName,searchType}) => ajax(BASE+'/manage/product/search',{

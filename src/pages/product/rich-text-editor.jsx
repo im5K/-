@@ -41,6 +41,33 @@ constructor(props){
     editorState
     }
 }
+//上传函数
+uploadImageCallBack =(file) =>{
+    return new Promise(
+        (resolve,reject) =>{
+            const xhr = new XMLHttpRequest()
+            xhr.open('POST','/manage/img/upload')
+            xhr.setRequestHeader('Authorization','Client-ID XXXXX')
+            const data = new FormData()
+            data.append('image',file)
+            xhr.send(data)
+            xhr.addEventListener('load',() =>{
+                const response  = JSON.parse(xhr.responseText)
+                const url = response.data.url
+                console.log(url)
+                resolve({data:{link:url}})
+            })
+            xhr.addEventListener('error',()=>{
+                const error = JSON.parse(xhr.responseText)
+                reject(error)
+            })
+        }
+
+    )
+
+}
+
+
 onEditorStateChange = (editorState) => {
     this.setState({
     editorState,
@@ -57,6 +84,10 @@ onEditorStateChange = (editorState) => {
     editorState={editorState}
     editorStyle={{minHeight: 200, border: '1px solid #000', padding: '0 30px'}}
     onEditorStateChange={this.onEditorStateChange}
+    toolbar={{
+        image:{uploadCallback:this.uploadImageCallBack,alt:{present: true,mandatory:true}}
+    }}
+
     />
     )
     }
