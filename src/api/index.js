@@ -40,7 +40,8 @@ export const reqUpdateRole = (role) => ajax(BASE+'/manage/role/update',role,'POS
 export const reqUsers = ()=> ajax(BASE+'/manage/user/list')
 //删除指定用户
 export const reqDeleteUsers = (userId)=> ajax(BASE+'/manage/user/delete',{userId},'POST')
-
+//添加用户
+export const reqAddOrUpdateUser = (user) => ajax(BASE+'/manage/user/'+(user._id?'update':'add'),user,'POST')
 //搜索商品分页列表
 
 export const reqSearchProducts = ({pageNum,pageSize, searchName,searchType}) => ajax(BASE+'/manage/product/search',{

@@ -16,6 +16,7 @@ import {formateDate} from '../../utils/dateUtils'
 import create from 'antd/lib/icon/IconFont'
 import { render } from 'less'
 
+import storageUtils from '../../utils/storageUtils.js'
 export default class Role extends Component{
     state= {
         roles:[],
@@ -107,10 +108,20 @@ export default class Role extends Component{
         const result = await reqUpdateRole(role)
         console.log(result)
         if(result.status===0){
-            message.success("更新权限成功！")
-            this.setState({
-                roles:[...this.state.roles]
-            })
+            //如果更新是自己角色，强制退出
+            if(role._id === memoryUtils.user.role_id){
+                memoryUtils.user= {}
+                storageUtils.removeUser()
+                this.props.history.replace('/login')
+                message.success('当前用户角色权限更新，请重新登陆！')
+            }else {
+                message.success("用户权限更新成功！")
+                this.setState({
+                    roles:[...this.state.roles]
+                })
+            }
+
+           
         }else {
             message.error("更新权限失败！")
         }
