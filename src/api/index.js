@@ -27,8 +27,19 @@ export const reqUpadateStatus= (productId,status) => ajax(BASE+"/manage/product/
 //删除图片
 export const reqDeleteImg = (name) => ajax('/manage/img/delete', {name}, 'post')
 //添加商品
-export const reqAddOrUpdateProduct  = (product) => ajax(BASE+'/manage/product/'+(product._id?'update':'add'),product,'POST')
 //修改商品
+export const reqAddOrUpdateProduct  = (product) => ajax(BASE+'/manage/product/'+(product._id?'update':'add'),product,'POST')
+//获取角色列表
+export const reqRoles = () => ajax(BASE+'/manage/role/list')
+//添加角色
+export const reqAddRole = (roleName) => ajax(BASE+'/manage/role/add',{roleName},'POST')
+//更新角色
+export const reqUpdateRole = (role) => ajax(BASE+'/manage/role/update',role,'POST')
+
+//获取用户列表
+export const reqUsers = ()=> ajax(BASE+'/manage/user/list')
+//删除指定用户
+export const reqDeleteUsers = (userId)=> ajax(BASE+'/manage/user/delete',{userId},'POST')
 
 //搜索商品分页列表
 
